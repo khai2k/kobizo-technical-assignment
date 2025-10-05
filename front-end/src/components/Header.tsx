@@ -15,6 +15,9 @@ export default function Header() {
           <Link href="/products" className={styles.navLink}>
             Products
           </Link>
+          <Link href="/blog" className={styles.navLink}>
+            Blog
+          </Link>
           <a href="#" className={styles.navLink}>
             About
           </a>

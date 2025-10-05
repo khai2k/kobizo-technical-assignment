@@ -11,6 +11,15 @@ export interface Product {
   updated_at: string;
 }
 
+export interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  author: string;
+  published_date: string;
+}
+
 export interface ApiResponse<T> {
   success: boolean;
   data: T;
@@ -183,6 +192,15 @@ class ApiClient {
       body: JSON.stringify({ items }),
     });
   }
+
+  // Blog methods
+  async getBlogPosts(): Promise<ApiResponse<BlogPost[]>> {
+    return this.request<BlogPost[]>("/api/v1/blog");
+  }
+
+  async getBlogPost(slug: string): Promise<ApiResponse<BlogPost>> {
+    return this.request<BlogPost>(`/api/v1/blog/${slug}`);
+  }
 }
 
 // Create and export a singleton instance
@@ -202,5 +220,33 @@ export async function fetchProducts(): Promise<Product[]> {
   } catch (error) {
     console.error("Error fetching products:", error);
     return [];
+  }
+}
+
+// Helper function to get blog posts with error handling
+export async function fetchBlogPosts(): Promise<BlogPost[]> {
+  try {
+    const response = await apiClient.getBlogPosts();
+    if (response.success) {
+      return response.data;
+    }
+    throw new Error(response.error || "Failed to fetch blog posts");
+  } catch (error) {
+    console.error("Error fetching blog posts:", error);
+    return [];
+  }
+}
+
+// Helper function to get single blog post with error handling
+export async function fetchBlogPost(slug: string): Promise<BlogPost | null> {
+  try {
+    const response = await apiClient.getBlogPost(slug);
+    if (response.success) {
+      return response.data;
+    }
+    throw new Error(response.error || "Failed to fetch blog post");
+  } catch (error) {
+    console.error("Error fetching blog post:", error);
+    return null;
   }
 }
