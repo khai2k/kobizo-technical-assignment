@@ -86,3 +86,19 @@ export interface CheckoutResponse {
   totalItems: number;
   canProceed: boolean;
 }
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  author: string;
+  published_date: string;
+}
+
+export interface BlogAuthor {
+  id: string;
+  name: string;
+  email: string;
+  avatar?: string;
+}

@@ -21,6 +21,14 @@ interface Schema {
     updated_at: string;
   };
   users: any;
+  blog_posts: {
+    id: string;
+    title: string;
+    slug: string;
+    content: string;
+    author: string;
+    published_date: string;
+  };
 }
 
 class DirectusService {
@@ -205,6 +213,62 @@ class DirectusService {
     } catch (error) {
       logger.error("Failed to check stock availability:", error);
       throw new Error("Failed to check stock availability from Directus");
+    }
+  }
+
+  async getBlogPosts(): Promise<any[]> {
+    try {
+      await this.ensureAuthenticated();
+
+      const blogPosts = await (this.client as any).request(
+        (readItems as any)("blog_posts", {
+          fields: [
+            "id",
+            "title",
+            "slug",
+            "content",
+            "author",
+            "published_date",
+          ],
+          sort: ["-published_date"],
+          limit: -1,
+        })
+      );
+
+      return blogPosts;
+    } catch (error) {
+      logger.error("Failed to fetch blog posts:", error);
+      throw new Error("Failed to fetch blog posts from Directus");
+    }
+  }
+
+  async getBlogPostBySlug(slug: string): Promise<any> {
+    try {
+      await this.ensureAuthenticated();
+
+      const blogPost = await (this.client as any).request(
+        (readItems as any)("blog_posts", {
+          fields: [
+            "id",
+            "title",
+            "slug",
+            "content",
+            "author",
+            "published_date",
+          ],
+          filter: {
+            slug: {
+              _eq: slug,
+            },
+          },
+          limit: 1,
+        })
+      );
+
+      return blogPost[0] || null;
+    } catch (error) {
+      logger.error("Failed to fetch blog post by slug:", error);
+      throw new Error("Failed to fetch blog post from Directus");
     }
   }
 }

@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import { authRoutes } from "./routes/auth.routes";
 import { productRoutes } from "./routes/product.routes";
 import { checkoutRoutes } from "./routes/checkout.routes";
+import { blogRoutes } from "./routes/blog.routes";
 import { errorHandler } from "./middleware/error.middleware";
 import { logger } from "./utils/logger";
 
@@ -60,6 +61,7 @@ app.get("/health", (req, res) => {
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/products", productRoutes);
 app.use("/api/v1/checkout", checkoutRoutes);
+app.use("/api/v1/blog", blogRoutes);
 
 // 404 handler
 app.use("*", (req, res) => {
