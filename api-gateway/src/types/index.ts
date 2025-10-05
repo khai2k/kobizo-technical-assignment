@@ -19,11 +19,10 @@ export interface AuthResponse {
 export interface Product {
   id: string;
   name: string;
-  description?: string;
+  slug: string;
   price: number;
-  category?: string;
-  image?: string;
-  stock?: number;
+  description?: string;
+  stock_quantity: number;
   created_at: string;
   updated_at: string;
 }
@@ -61,4 +60,29 @@ export interface DirectusError {
       code: string;
     };
   }>;
+}
+
+export interface CheckoutItem {
+  productId: string;
+  quantity: number;
+}
+
+export interface CheckoutRequest {
+  items: CheckoutItem[];
+}
+
+export interface StockCheckResult {
+  productId: string;
+  productName: string;
+  requestedQuantity: number;
+  availableStock: number;
+  isAvailable: boolean;
+}
+
+export interface CheckoutResponse {
+  success: boolean;
+  message: string;
+  stockCheck: StockCheckResult[];
+  totalItems: number;
+  canProceed: boolean;
 }

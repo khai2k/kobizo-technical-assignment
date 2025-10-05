@@ -10,7 +10,16 @@ import { logger } from "../utils/logger";
 
 // Define the schema for our collections
 interface Schema {
-  products: any;
+  products: {
+    id: string;
+    name: string;
+    slug: string;
+    price: number;
+    description: string;
+    stock_quantity: number;
+    created_at: string;
+    updated_at: string;
+  };
   users: any;
 }
 
@@ -101,7 +110,16 @@ class DirectusService {
 
       const products = await (this.client as any).request(
         (readItems as any)("products", {
-          fields: ["*"],
+          fields: [
+            "id",
+            "name",
+            "slug",
+            "price",
+            "description",
+            "stock_quantity",
+            "created_at",
+            "updated_at",
+          ],
           limit: -1, // Get all products
         })
       );
@@ -119,7 +137,16 @@ class DirectusService {
 
       const product = await (this.client as any).request(
         (readItems as any)("products", {
-          fields: ["*"],
+          fields: [
+            "id",
+            "name",
+            "slug",
+            "price",
+            "description",
+            "stock_quantity",
+            "created_at",
+            "updated_at",
+          ],
           filter: {
             id: {
               _eq: id,
@@ -155,6 +182,29 @@ class DirectusService {
     } catch (error) {
       logger.error("Failed to get user info:", error);
       throw new Error("Failed to get user information from Directus");
+    }
+  }
+
+  async checkStockAvailability(productIds: string[]): Promise<any[]> {
+    try {
+      await this.ensureAuthenticated();
+
+      const products = await (this.client as any).request(
+        (readItems as any)("products", {
+          fields: ["id", "name", "stock_quantity"],
+          filter: {
+            id: {
+              _in: productIds,
+            },
+          },
+          limit: -1,
+        })
+      );
+
+      return products;
+    } catch (error) {
+      logger.error("Failed to check stock availability:", error);
+      throw new Error("Failed to check stock availability from Directus");
     }
   }
 }

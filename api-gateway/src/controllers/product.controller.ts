@@ -15,11 +15,10 @@ class ProductController {
       const transformedProducts = products.map((product: any) => ({
         id: product.id,
         name: product.name,
-        description: product.description,
+        slug: product.slug,
         price: product.price,
-        category: product.category,
-        image: product.image,
-        stock: product.stock,
+        description: product.description,
+        stock_quantity: product.stock_quantity,
         created_at: product.created_at,
         updated_at: product.updated_at,
       }));
@@ -63,11 +62,10 @@ class ProductController {
       const transformedProduct: Product = {
         id: product.id,
         name: product.name,
-        description: product.description,
+        slug: product.slug,
         price: product.price,
-        category: product.category,
-        image: product.image,
-        stock: product.stock,
+        description: product.description,
+        stock_quantity: product.stock_quantity,
         created_at: product.created_at,
         updated_at: product.updated_at,
       };
