@@ -328,7 +328,79 @@ curl -X GET http://localhost:3001/api/v1/products/1 \
 
 ---
 
-### 4. Checkout Endpoints
+### 4. Blog Endpoints
+
+#### GET /api/v1/blog
+
+Get all blog posts.
+
+**Response (200 OK):**
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": "1",
+      "title": "Getting Started with Next.js",
+      "slug": "getting-started-with-nextjs",
+      "content": "This is a comprehensive guide to Next.js development...",
+      "author": "John Doe",
+      "published_date": "2023-01-01T00:00:00Z"
+    }
+  ],
+  "message": "Retrieved 1 blog posts"
+}
+```
+
+**cURL Example:**
+
+```bash
+curl -X GET http://localhost:3001/api/v1/blog
+```
+
+---
+
+#### GET /api/v1/blog/:slug
+
+Get a specific blog post by slug.
+
+**Response (200 OK):**
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "1",
+    "title": "Getting Started with Next.js",
+    "slug": "getting-started-with-nextjs",
+    "content": "This is a comprehensive guide to Next.js development...",
+    "author": "John Doe",
+    "published_date": "2023-01-01T00:00:00Z"
+  },
+  "message": "Blog post retrieved successfully"
+}
+```
+
+**Response (404 Not Found):**
+
+```json
+{
+  "success": false,
+  "error": "Blog post not found",
+  "message": "Blog post not found"
+}
+```
+
+**cURL Example:**
+
+```bash
+curl -X GET http://localhost:3001/api/v1/blog/getting-started-with-nextjs
+```
+
+---
+
+### 5. Checkout Endpoints
 
 #### POST /api/v1/checkout
 
@@ -549,18 +621,21 @@ api-gateway/
 │   ├── controllers/
 │   │   ├── auth.controller.ts  # Authentication logic
 │   │   ├── product.controller.ts # Product logic
-│   │   └── checkout.controller.ts # Checkout logic
+│   │   ├── checkout.controller.ts # Checkout logic
+│   │   └── blog.controller.ts  # Blog logic
 │   ├── middleware/
 │   │   ├── auth.middleware.ts  # JWT authentication
 │   │   └── error.middleware.ts # Error handling
 │   ├── routes/
 │   │   ├── auth.routes.ts      # Authentication routes
 │   │   ├── product.routes.ts   # Product routes
-│   │   └── checkout.routes.ts  # Checkout routes
+│   │   ├── checkout.routes.ts  # Checkout routes
+│   │   └── blog.routes.ts      # Blog routes
 │   ├── tests/
 │   │   ├── auth.test.ts        # Auth tests
 │   │   ├── product.test.ts     # Product tests
 │   │   ├── checkout.test.ts   # Checkout tests
+│   │   ├── blog.test.ts       # Blog tests
 │   │   └── setup.ts            # Test setup
 │   ├── types/
 │   │   └── index.ts            # TypeScript type definitions
