@@ -1,0 +1,45 @@
+services:
+  postgres:
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: directus
+      POSTGRES_PASSWORD: directus
+      POSTGRES_DB: directus
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U directus"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  directus:
+    image: directus/directus:latest
+    ports:
+      - "8055:8055"
+    environment:
+      KEY: "1f3e8b7c9d2a4f6e0b5c1a9d7e2f4b6c"
+      SECRET: "1f3e8b7c9d2a4f6e0b5c1a9d7e2f4b6c"
+      DB_CLIENT: "pg"
+      DB_HOST: "postgres"
+      DB_PORT: "5432"
+      DB_DATABASE: "directus"
+      DB_USER: "directus"
+      DB_PASSWORD: "directus"
+      ADMIN_EMAIL: "admin@example.com"
+      ADMIN_PASSWORD: "Admin1234!"
+      ADMIN_FIRSTNAME: "Admin"
+      ADMIN_LASTNAME: "User"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - directus-uploads:/directus/uploads
+      - directus-extensions:/directus/extensions
+
+volumes:
+  pgdata:
+  directus-uploads:
+  directus-extensions:
