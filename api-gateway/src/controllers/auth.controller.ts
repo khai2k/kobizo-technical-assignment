@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { validationResult } from "express-validator";
 import { directusService } from "../config/directus";
 import { AppError } from "../middleware/error.middleware";
@@ -11,7 +11,6 @@ import {
   User,
 } from "../types";
 import { logger } from "../utils/logger";
-import { cp } from "fs";
 
 class AuthController {
   private static generateToken(user: User): string {
@@ -19,19 +18,12 @@ class AuthController {
     const jwtExpiresIn = process.env.JWT_EXPIRES_IN || "24h";
 
     if (!jwtSecret) {
-      console.log("JWT secret not configured");
       throw new AppError("JWT secret not configured", 500);
     }
-    console.log("JWT secret:", jwtSecret);
 
-    const x = jwt.sign({ user }, jwtSecret as string, {
-      expiresIn: jwtExpiresIn as string,
-    });
-    console.log("X:", x);
-
-    return jwt.sign({ user }, jwtSecret as string, {
-      expiresIn: jwtExpiresIn as string,
-    });
+    return jwt.sign({ user }, jwtSecret, {
+      expiresIn: jwtExpiresIn,
+    } as jwt.SignOptions);
   }
 
   async login(req: Request, res: Response): Promise<void> {

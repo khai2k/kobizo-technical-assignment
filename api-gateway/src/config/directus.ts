@@ -10,27 +10,8 @@ import { logger } from "../utils/logger";
 
 // Define the schema for our collections
 interface Schema {
-  products: {
-    id: string;
-    name: string;
-    description: string;
-    price: number;
-    category: string;
-    image: string;
-    stock: number;
-    created_at: string;
-    updated_at: string;
-  };
-  users: {
-    id: string;
-    email: string;
-    first_name: string;
-    last_name: string;
-    role: string;
-    status: string;
-    created_at: string;
-    updated_at: string;
-  };
+  products: any;
+  users: any;
 }
 
 class DirectusService {
@@ -39,7 +20,7 @@ class DirectusService {
 
   constructor() {
     const directusUrl = process.env.DIRECTUS_URL || "http://localhost:8055";
-    this.client = createDirectus<Schema>(directusUrl)
+    this.client = createDirectus(directusUrl)
       .with(rest())
       .with(authentication());
   }
@@ -78,7 +59,7 @@ class DirectusService {
   async loginUser(email: string, password: string): Promise<any> {
     try {
       // Create a new client instance for user authentication
-      const userClient = createDirectus<Schema>(
+      const userClient = createDirectus(
         process.env.DIRECTUS_URL || "http://localhost:8055"
       )
         .with(rest())
@@ -100,7 +81,7 @@ class DirectusService {
   }): Promise<any> {
     try {
       // Create a new client instance for user registration
-      const userClient = createDirectus<Schema>(
+      const userClient = createDirectus(
         process.env.DIRECTUS_URL || "http://localhost:8055"
       )
         .with(rest())
@@ -118,8 +99,8 @@ class DirectusService {
     try {
       await this.ensureAuthenticated();
 
-      const products = await this.client.request(
-        readItems("products", {
+      const products = await (this.client as any).request(
+        (readItems as any)("products", {
           fields: ["*"],
           limit: -1, // Get all products
         })
@@ -136,8 +117,8 @@ class DirectusService {
     try {
       await this.ensureAuthenticated();
 
-      const product = await this.client.request(
-        readItems("products", {
+      const product = await (this.client as any).request(
+        (readItems as any)("products", {
           fields: ["*"],
           filter: {
             id: {
@@ -158,7 +139,7 @@ class DirectusService {
   async getUserInfo(accessToken: string): Promise<any> {
     try {
       // Create a new client instance with the user's access token
-      const userClient = createDirectus<Schema>(
+      const userClient = createDirectus(
         process.env.DIRECTUS_URL || "http://localhost:8055"
       )
         .with(rest())
