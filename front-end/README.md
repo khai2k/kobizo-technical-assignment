@@ -31,13 +31,19 @@ A modern Next.js application built with TypeScript and CSS Modules for the Kobiz
    npm install
    ```
 
-3. Run the development server:
+3. Create environment file:
+
+   ```bash
+   echo "NEXT_PUBLIC_API_URL=http://localhost:3001" > .env.local
+   ```
+
+4. Run the development server:
 
    ```bash
    npm run dev
    ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Available Scripts
 
@@ -54,12 +60,25 @@ src/
 │   ├── globals.css      # Global styles
 │   ├── layout.tsx       # Root layout
 │   ├── page.tsx         # Home page
-│   └── page.module.css  # Page styles
-└── components/
-    ├── Header.tsx       # Header component
-    ├── Header.module.css
-    ├── Main.tsx         # Main content
-    └── Main.module.css
+│   ├── page.module.css  # Page styles
+│   └── products/
+│       ├── page.tsx     # Products catalog page
+│       └── page.module.css
+├── components/
+│   ├── Header.tsx       # Header component
+│   ├── Header.module.css
+│   ├── Main.tsx         # Main content
+│   ├── Main.module.css
+│   ├── ProductCard.tsx  # Product card component
+│   ├── ProductCard.module.css
+│   ├── ProductGrid.tsx  # Product grid component
+│   ├── ProductGrid.module.css
+│   ├── ProductFilters.tsx # Product filters
+│   ├── ProductFilters.module.css
+│   ├── Pagination.tsx   # Pagination component
+│   └── Pagination.module.css
+└── lib/
+    └── api.ts           # API client
 ```
 
 ## Styling
