@@ -27,20 +27,34 @@ export interface ApiResponse<T> {
   message?: string;
 }
 
+export interface User {
+  id: string;
+  email: string;
+  first_name?: string;
+  last_name?: string;
+  role: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface RegisterRequest {
+  email: string;
+  password: string;
+  first_name?: string;
+  last_name?: string;
+}
+
 export interface AuthResponse {
   access_token: string;
   refresh_token?: string;
   expires: number;
-  user: {
-    id: string;
-    email: string;
-    first_name: string;
-    last_name: string;
-    role: string;
-    status: string;
-    created_at: string;
-    updated_at: string;
-  };
+  user: User;
 }
 
 class ApiClient {

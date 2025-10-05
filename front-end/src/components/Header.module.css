@@ -12,6 +12,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 2rem;
 }
 
 .title {
@@ -43,6 +44,56 @@
   color: #60a5fa;
 }
 
+.authSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.loading {
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+.userMenu {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.userName {
+  color: #e5e7eb;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.loginButton,
+.logoutButton {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.loginButton:hover,
+.logoutButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.logoutButton {
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+}
+
+.logoutButton:hover {
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+}
+
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
@@ -56,5 +107,15 @@
 
   .title {
     font-size: 1.25rem;
+  }
+
+  .authSection {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .userMenu {
+    flex-direction: column;
+    gap: 0.5rem;
   }
 }
