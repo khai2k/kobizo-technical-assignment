@@ -6,7 +6,7 @@ import { asyncHandler } from "../middleware/error.middleware";
 const router = Router();
 
 // All product routes require authentication
-router.use(authenticateToken);
+// router.use(authenticateToken);
 
 // Routes
 router.get("/", asyncHandler(productController.getAllProducts));

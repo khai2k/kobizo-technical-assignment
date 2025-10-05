@@ -16,9 +16,9 @@ class ProductController {
         id: product.id,
         name: product.name,
         slug: product.slug,
-        price: product.price,
+        price: Number(product.price),
         description: product.description,
-        stock_quantity: product.stock_quantity,
+        stock_quantity: Number(product.stock_quantity),
         created_at: product.created_at,
         updated_at: product.updated_at,
       }));
@@ -63,9 +63,9 @@ class ProductController {
         id: product.id,
         name: product.name,
         slug: product.slug,
-        price: product.price,
+        price: Number(product.price),
         description: product.description,
-        stock_quantity: product.stock_quantity,
+        stock_quantity: Number(product.stock_quantity),
         created_at: product.created_at,
         updated_at: product.updated_at,
       };
