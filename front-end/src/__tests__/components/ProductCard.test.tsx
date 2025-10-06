@@ -88,6 +88,29 @@ describe("ProductCard Integration Tests", () => {
     expect(card).toHaveClass("card");
   });
 
+  it("displays product image when image_url is provided", () => {
+    const mockProduct = mockProducts[0];
+
+    render(<ProductCard product={mockProduct} />);
+
+    // Check if the product image is rendered
+    const productImage = screen.getByAltText(mockProduct.name);
+    expect(productImage).toBeInTheDocument();
+    expect(productImage).toHaveAttribute("src", mockProduct.image_url);
+  });
+
+  it("displays placeholder when no image_url is provided", () => {
+    const mockProductWithoutImage = {
+      ...mockProducts[0],
+      image_url: undefined,
+    };
+
+    render(<ProductCard product={mockProductWithoutImage} />);
+
+    // Check if placeholder text is displayed
+    expect(screen.getByText("Product Image")).toBeInTheDocument();
+  });
+
   it("is accessible with proper ARIA attributes", () => {
     const mockProduct = mockProducts[0];
 

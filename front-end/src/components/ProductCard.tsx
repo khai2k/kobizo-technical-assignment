@@ -18,7 +18,24 @@ export default function ProductCard({
   return (
     <div className={styles.card}>
       <div className={styles.imageContainer}>
-        <div className={styles.placeholderImage}>
+        {product.image_url ? (
+          <img
+            src={product.image_url}
+            alt={product.name}
+            className={styles.productImage}
+            onError={(e) => {
+              // Fallback to placeholder if image fails to load
+              const target = e.target as HTMLImageElement;
+              target.style.display = "none";
+              const placeholder = target.nextElementSibling as HTMLElement;
+              if (placeholder) placeholder.style.display = "flex";
+            }}
+          />
+        ) : null}
+        <div
+          className={styles.placeholderImage}
+          style={{ display: product.image_url ? "none" : "flex" }}
+        >
           <span className={styles.imageText}>Product Image</span>
         </div>
         {!isInStock && (

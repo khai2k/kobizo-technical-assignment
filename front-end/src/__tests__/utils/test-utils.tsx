@@ -31,6 +31,8 @@ export const mockProducts = [
     price: 1299.99,
     description: "High-performance laptop for professionals",
     stock_quantity: 10,
+    image_url:
+      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400",
     created_at: "2023-01-01T00:00:00Z",
     updated_at: "2023-01-01T00:00:00Z",
   },
@@ -41,6 +43,8 @@ export const mockProducts = [
     price: 199.99,
     description: "Noise-cancelling wireless headphones",
     stock_quantity: 25,
+    image_url:
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400",
     created_at: "2023-01-02T00:00:00Z",
     updated_at: "2023-01-02T00:00:00Z",
   },

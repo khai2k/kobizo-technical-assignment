@@ -7,6 +7,7 @@ export interface Product {
   price: number;
   description: string;
   stock_quantity: number;
+  image_url?: string;
   created_at: string;
   updated_at: string;
 }
@@ -82,7 +83,9 @@ class ApiClient {
     };
 
     if (this.token) {
-      headers.Authorization = `Bearer ${this.token}`;
+      (
+        headers as Record<string, string>
+      ).Authorization = `Bearer ${this.token}`;
     }
 
     // Log request details
