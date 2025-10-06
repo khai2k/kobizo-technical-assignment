@@ -1,13 +1,8 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  ReactNode,
-} from "react";
+import { createContext, useContext, ReactNode } from "react";
 import { User, LoginRequest, RegisterRequest } from "@/lib/api";
+import { useUser, useLogin, useRegister, useLogout } from "@/hooks/useAuth";
 
 interface AuthContextType {
   user: User | null;
@@ -32,51 +27,15 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Check if user is logged in on mount
-  useEffect(() => {
-    checkAuthStatus();
-  }, []);
-
-  const checkAuthStatus = async () => {
-    try {
-      const response = await fetch("/api/auth/me", {
-        credentials: "include",
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        if (data.success) {
-          setUser(data.data);
-        }
-      }
-    } catch (error) {
-      console.error("Auth check failed:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { data: user, isLoading } = useUser();
+  const loginMutation = useLogin();
+  const registerMutation = useRegister();
+  const logoutMutation = useLogout();
 
   const login = async (credentials: LoginRequest): Promise<boolean> => {
     try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(credentials),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        setUser(data.data.user);
-        return true;
-      }
-      return false;
+      await loginMutation.mutateAsync(credentials);
+      return true;
     } catch (error) {
       console.error("Login failed:", error);
       return false;
@@ -85,22 +44,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const register = async (userData: RegisterRequest): Promise<boolean> => {
     try {
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(userData),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        setUser(data.data.user);
-        return true;
-      }
-      return false;
+      await registerMutation.mutateAsync(userData);
+      return true;
     } catch (error) {
       console.error("Registration failed:", error);
       return false;
@@ -109,19 +54,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const logout = async (): Promise<void> => {
     try {
-      await fetch("/api/auth/logout", {
-        method: "POST",
-        credentials: "include",
-      });
+      await logoutMutation.mutateAsync();
     } catch (error) {
       console.error("Logout failed:", error);
-    } finally {
-      setUser(null);
     }
   };
 
   const value = {
-    user,
+    user: user || null,
     isLoading,
     login,
     register,

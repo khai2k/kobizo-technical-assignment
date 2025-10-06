@@ -1,5 +1,7 @@
-import { Suspense } from "react";
-import { fetchProducts, Product } from "@/lib/api";
+"use client";
+
+import { useState, useMemo } from "react";
+import { useProducts } from "@/hooks/useProducts";
 import ProductFilters from "@/components/ProductFilters";
 import ProductGrid from "@/components/ProductGrid";
 import Pagination from "@/components/Pagination";
@@ -15,118 +17,99 @@ interface ProductsPageProps {
   };
 }
 
-// Server-side filtering and sorting function
-function filterAndSortProducts(
-  products: Product[],
-  search: string = "",
-  sortBy: string = "name",
-  sortOrder: string = "asc",
-  inStock: boolean = false
-): Product[] {
-  let filteredProducts = [...products];
-
-  // Filter by search term
-  if (search) {
-    const searchLower = search.toLowerCase();
-    filteredProducts = filteredProducts.filter(
-      (product) =>
-        product.name.toLowerCase().includes(searchLower) ||
-        product.description.toLowerCase().includes(searchLower)
-    );
-  }
-
-  // Filter by stock availability
-  if (inStock) {
-    filteredProducts = filteredProducts.filter(
-      (product) => product.stock_quantity > 0
-    );
-  }
-
-  // Sort products
-  filteredProducts.sort((a, b) => {
-    let aValue: any;
-    let bValue: any;
-
-    switch (sortBy) {
-      case "price":
-        aValue = a.price;
-        bValue = b.price;
-        break;
-      case "created_at":
-        aValue = new Date(a.created_at);
-        bValue = new Date(b.created_at);
-        break;
-      default: // name
-        aValue = a.name.toLowerCase();
-        bValue = b.name.toLowerCase();
-    }
-
-    if (aValue < bValue) return sortOrder === "asc" ? -1 : 1;
-    if (aValue > bValue) return sortOrder === "asc" ? 1 : -1;
-    return 0;
+export default function ProductsPage({ searchParams }: ProductsPageProps) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [filters, setFilters] = useState({
+    search: searchParams.search || "",
+    sortBy: searchParams.sortBy || "name",
+    sortOrder: searchParams.sortOrder || "asc",
+    inStock: searchParams.inStock === "true",
   });
 
-  return filteredProducts;
-}
+  const {
+    data: products = [],
+    isLoading,
+    error,
+  } = useProducts({
+    ...filters,
+    page: currentPage,
+    limit: 12,
+  });
 
-export default async function ProductsPage({
-  searchParams,
-}: ProductsPageProps) {
-  // Fetch products from API
-  const allProducts = await fetchProducts();
+  const handleFilterChange = (newFilters: Partial<typeof filters>) => {
+    setFilters((prev) => ({ ...prev, ...newFilters }));
+    setCurrentPage(1); // Reset to first page when filters change
+  };
 
-  // Parse search parameters
-  const search = searchParams.search || "";
-  const sortBy = searchParams.sortBy || "name";
-  const sortOrder = searchParams.sortOrder || "asc";
-  const inStock = searchParams.inStock === "true";
-  const currentPage = parseInt(searchParams.page || "1", 10);
-  const itemsPerPage = 12;
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    // Scroll to top when page changes
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
-  // Filter and sort products
-  const filteredProducts = filterAndSortProducts(
-    allProducts,
-    search,
-    sortBy,
-    sortOrder,
-    inStock
-  );
+  if (isLoading) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.loading}>
+          <div className={styles.spinner}></div>
+          <p>Loading products...</p>
+        </div>
+      </div>
+    );
+  }
 
-  // Calculate pagination
-  const totalItems = filteredProducts.length;
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
+  if (error) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.error}>
+          <h2>Error loading products</h2>
+          <p>Please try again later.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <h1 className={styles.title}>Product Catalog</h1>
+      <header className={styles.header}>
+        <h1 className={styles.title}>Products</h1>
         <p className={styles.subtitle}>
-          Discover our collection of {totalItems} products
+          Discover our collection of high-quality products
         </p>
-      </div>
+      </header>
 
       <div className={styles.content}>
         <aside className={styles.sidebar}>
-          <Suspense fallback={<div>Loading filters...</div>}>
-            <ProductFilters />
-          </Suspense>
+          <ProductFilters
+            filters={filters}
+            onFilterChange={handleFilterChange}
+          />
         </aside>
 
         <main className={styles.main}>
-          <Suspense fallback={<div>Loading products...</div>}>
-            <ProductGrid products={paginatedProducts} />
-          </Suspense>
+          <div className={styles.resultsHeader}>
+            <p className={styles.resultsCount}>
+              {products.length} product{products.length !== 1 ? "s" : ""} found
+            </p>
+          </div>
 
-          {totalPages > 1 && (
+          <ProductGrid products={products} />
+
+          {products.length > 0 && (
             <Pagination
               currentPage={currentPage}
-              totalPages={totalPages}
-              totalItems={totalItems}
-              itemsPerPage={itemsPerPage}
+              totalPages={Math.ceil(products.length / 12)}
+              onPageChange={handlePageChange}
             />
+          )}
+
+          {products.length === 0 && (
+            <div className={styles.emptyState}>
+              <h2 className={styles.emptyTitle}>No products found</h2>
+              <p className={styles.emptyDescription}>
+                Try adjusting your search criteria or filters.
+              </p>
+            </div>
           )}
         </main>
       </div>

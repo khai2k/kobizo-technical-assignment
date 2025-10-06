@@ -1,10 +1,33 @@
-import Link from "next/link";
-import { fetchBlogPosts } from "@/lib/api";
+"use client";
+
+import { useBlogPosts } from "@/hooks/useBlog";
 import BlogPostCard from "@/components/BlogPostCard";
 import styles from "./page.module.css";
 
-export default async function BlogPage() {
-  const posts = await fetchBlogPosts();
+export default function BlogPage() {
+  const { data: posts = [], isLoading, error } = useBlogPosts();
+
+  if (isLoading) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.loading}>
+          <div className={styles.spinner}></div>
+          <p>Loading blog posts...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.error}>
+          <h2>Error loading blog posts</h2>
+          <p>Please try again later.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>

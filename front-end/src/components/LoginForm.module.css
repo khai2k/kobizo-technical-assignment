@@ -51,12 +51,15 @@
   font-size: 1rem;
   transition: all 0.2s ease;
   background: #f8fafc;
+  color: #1f2937;
+  font-weight: 500;
 }
 
 .input:focus {
   outline: none;
   border-color: #3b82f6;
   background: white;
+  color: #1f2937;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
