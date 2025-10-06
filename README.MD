@@ -4,6 +4,7 @@ A comprehensive full-stack application built with a three-tier architecture cons
 
 ## 📑 Table of Contents
 
+- [📸 Screenshots](#-screenshots)
 - [🏗️ Architecture Overview](#️-architecture-overview)
 - [📋 Prerequisites](#-prerequisites)
 - [🚀 Quick Start](#-quick-start)
