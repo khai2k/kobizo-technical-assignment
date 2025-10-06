@@ -138,10 +138,24 @@ describe("Blog Endpoints", () => {
       expect(response.body.error).toBe("Blog post not found");
     });
 
-    it("should return 400 for missing slug parameter", async () => {
+    it("should return 200 for root blog endpoint", async () => {
+      const mockBlogPosts = [
+        {
+          id: "1",
+          title: "Blog Post",
+          slug: "blog-post",
+          content: "Content here...",
+          author: "John Doe",
+          published_date: "2023-01-01T00:00:00Z",
+        },
+      ];
+
+      mockedDirectusService.getBlogPosts.mockResolvedValue(mockBlogPosts);
+
       const response = await request(app).get("/api/v1/blog/");
 
-      expect(response.status).toBe(404); // This will be caught by the 404 handler
+      expect(response.status).toBe(200);
+      expect(response.body.success).toBe(true);
     });
 
     it("should return 500 when Directus service fails", async () => {
