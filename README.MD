@@ -20,6 +20,35 @@ A comprehensive full-stack application built with a three-tier architecture cons
 - [🤝 Contributing](#-contributing)
 - [📄 License](#-license)
 
+## 📸 Screenshots
+
+### Application Screenshots
+
+#### Frontend Pages
+
+![Frontend Home Page](images/Frontend-home-page.png)
+_Home page with product listings and navigation_
+
+![Frontend Product Page](images/Frontend-product-page.png)
+_Product page with detailed product information and filters_
+
+![Frontend Blog Page](images/Frontend-blog-page.png)
+_Blog page showcasing content management capabilities_
+
+![Frontend Login Page](images/Frontend-login-page.png)
+_Authentication modal with login and registration forms_
+
+#### Backend & Testing
+
+![Directus CMS](images/directus-cms.png)
+_Directus CMS admin panel for content management_
+
+![API Gateway Unit Tests](images/ApiGateway-unit-tests.png)
+_Comprehensive unit test coverage for the API Gateway_
+
+![Frontend Integration Tests](images/Frontend-integration-tests.png)
+_Integration tests demonstrating full-stack functionality_
+
 ## 🏗️ Architecture Overview
 
 This project implements a modern three-tier architecture:
