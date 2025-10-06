@@ -37,7 +37,6 @@ class AuthController {
     try {
       // Authenticate with Directus
       const directusResponse = await directusService.loginUser(email, password);
-      console.log("Directus response:", directusResponse);
 
       if (!directusResponse || !directusResponse.access_token) {
         throw new AppError("Invalid credentials", 401);
@@ -48,14 +47,12 @@ class AuthController {
         directusResponse.access_token
       );
 
-      console.log("User info:", userInfo);
       if (!userInfo) {
         throw new AppError("Failed to get user information", 401);
       }
 
       // Generate JWT token
       const token = AuthController.generateToken(userInfo as User);
-      console.log("Token:", token);
 
       const response: ApiResponse<AuthResponse> = {
         success: true,

@@ -28,6 +28,11 @@ class Logger {
   private log(level: string, message: string, meta?: any): void {
     const formattedMessage = this.formatMessage(level, message, meta);
 
+    // Don't log during tests
+    if (process.env.NODE_ENV === "test") {
+      return;
+    }
+
     if (this.isDevelopment) {
       console.log(formattedMessage);
     } else {
