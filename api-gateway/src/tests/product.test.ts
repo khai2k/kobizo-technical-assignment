@@ -26,6 +26,7 @@ describe("Product Endpoints", () => {
           price: 100,
           description: "Description 1",
           stock_quantity: 10,
+          image_url: "https://example.com/image1.jpg",
           created_at: "2023-01-01T00:00:00Z",
           updated_at: "2023-01-01T00:00:00Z",
         },
@@ -36,6 +37,7 @@ describe("Product Endpoints", () => {
           price: 200,
           description: "Description 2",
           stock_quantity: 5,
+          image_url: "https://example.com/image2.jpg",
           created_at: "2023-01-01T00:00:00Z",
           updated_at: "2023-01-01T00:00:00Z",
         },
@@ -94,6 +96,7 @@ describe("Product Endpoints", () => {
         price: 100,
         description: "Description 1",
         stock_quantity: 10,
+        image_url: "https://example.com/image1.jpg",
         created_at: "2023-01-01T00:00:00Z",
         updated_at: "2023-01-01T00:00:00Z",
       };

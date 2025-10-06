@@ -265,6 +265,7 @@ Authorization: Bearer <jwt-token>
       "price": 99.99,
       "description": "Product description",
       "stock_quantity": 10,
+      "image_url": "https://example.com/product-image.jpg",
       "created_at": "2023-01-01T00:00:00Z",
       "updated_at": "2023-01-01T00:00:00Z"
     }
@@ -303,7 +304,8 @@ Authorization: Bearer <jwt-token>
     "slug": "product-name",
     "price": 99.99,
     "description": "Product description",
-    "stock_quantity": 10
+    "stock_quantity": 10,
+    "image_url": "https://example.com/product-image.jpg"
   },
   "message": "Product retrieved successfully"
 }

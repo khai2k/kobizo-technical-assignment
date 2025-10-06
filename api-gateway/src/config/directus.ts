@@ -17,6 +17,7 @@ interface Schema {
     price: number;
     description: string;
     stock_quantity: number;
+    image_url: string;
     created_at: string;
     updated_at: string;
   };
@@ -125,6 +126,7 @@ class DirectusService {
             "price",
             "description",
             "stock_quantity",
+            "image_url",
             "created_at",
             "updated_at",
           ],
@@ -152,6 +154,7 @@ class DirectusService {
             "price",
             "description",
             "stock_quantity",
+            "image_url",
             "created_at",
             "updated_at",
           ],

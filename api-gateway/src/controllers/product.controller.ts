@@ -19,6 +19,7 @@ class ProductController {
         price: Number(product.price),
         description: product.description,
         stock_quantity: Number(product.stock_quantity),
+        image_url: product.image_url,
         created_at: product.created_at,
         updated_at: product.updated_at,
       }));
@@ -66,6 +67,7 @@ class ProductController {
         price: Number(product.price),
         description: product.description,
         stock_quantity: Number(product.stock_quantity),
+        image_url: product.image_url,
         created_at: product.created_at,
         updated_at: product.updated_at,
       };
